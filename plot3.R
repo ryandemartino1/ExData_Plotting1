@@ -1,0 +1,12 @@
+p1raw <- read.table("./data/pc.txt", sep = ";", header = TRUE)
+index1 <- grep("1/2/2007", p1raw$Date)
+index2 <- grep("2/2/2007", p1raw$Date)
+sub1 <- rbind(p1raw[index1,], p1raw[index2,])
+power <- as.numeric(sub1$Global_active_power)/1000
+png(filename = "plot3.png", width = 480, height = 480)
+plot(1:8640, sub1$Sub_metering_1, type = "l", col = "black", xaxt = "n", ylab = "Energy Sub Metering", xlab = "")
+axis(1, at = c(1,4320, 8640), labels = c("Thu", "Fri", "Sat"))
+with(sub1, lines(1:8640, sub1$Sub_metering_3, col = "red"))
+with(sub1, lines(1:8640, sub1$Sub_metering_2, col = "blue"))
+legend("topright", pch = "-", col = c("black", "blue", "red"), legend = c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"))
+dev.off()
